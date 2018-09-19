@@ -10,8 +10,8 @@ router.get('/', (req, res) => {
 });
 
 // Read
-router.get('/lists', (req, res) => { 
-  models.post.findAll({})
+router.get('/lists', (req, res) => {
+  models.post.findAll()
     .then(result => {
       res.render('lists', {
         posts: result
@@ -20,12 +20,12 @@ router.get('/lists', (req, res) => {
 });
 
 // Create
-router.post('/create', (req, res) => { 
+router.post('/create', (req, res) => {
   let body = req.body;
 
   console.log(body)
   models.post.create({
-      title: body.inputTitle,
+      title: body.inputTitle, // a(db): b(browser)
       writer: body.inputWriter
     })
     .then(result => {
@@ -39,11 +39,11 @@ router.post('/create', (req, res) => {
 
 // Update
 router.get('/edit/:id', (req, res) => {
-  let id = req.params.id;
+  let postID = req.params.id;
 
   models.post.find({
       where: {
-        id: id
+        id: postID
       }
     })
     .then(result => {
@@ -56,7 +56,7 @@ router.get('/edit/:id', (req, res) => {
     });
 });
 router.put('/update/:id', (req, res) => {
-  let id = req.params.id;
+  let postID = req.params.id;
   let body = req.body;
 
   models.post.update({
@@ -64,7 +64,7 @@ router.put('/update/:id', (req, res) => {
       writer: body.editWriter
     }, {
       where: {
-        id: id
+        id: postID
       }
     })
     .then(result => {
@@ -78,17 +78,41 @@ router.put('/update/:id', (req, res) => {
 
 // Delete
 router.delete('/delete/:id', (req, res) => {
-  let id = req.params.id;
+  let postID = req.params.id;
 
   models.post.destroy({
-    where: { id: id } // where 작성 안하면 모든 데이터가 삭제됨
-  })
-  .then(result => {
-    res.redirect('/lists');
-  })
-  .catch(err => {
-    console.log("> Failed deleting data");
-  })
+      where: {
+        id: postID
+      } // where 작성 안하면 모든 데이터가 삭제됨
+    })
+    .then(result => {
+      res.redirect('/lists');
+    })
+    .catch(err => {
+      console.log("> Failed deleting data");
+    })
+});
+
+// 댓글
+router.post('/reply/:id', (req, res) => {
+  let postID = req.params.id;
+  let body = req.body;
+
+  models.reply.create({
+      posttId: postID, // a(db):b(browser)
+      writer: body.replyWriter,
+      content: body.replyContent
+    })
+    .then(results => { // 복수형으로 사용
+      console.log('> Succeeded writing comment');
+      res.redirect('/lists')
+      console.log(results)
+      console.log('--------')
+    })
+    .catch(err => {
+      console.log('> Failed writing comment');
+      console.log(err)
+    });
 });
 
 module.exports = router;

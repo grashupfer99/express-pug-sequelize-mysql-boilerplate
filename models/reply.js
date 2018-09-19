@@ -1,12 +1,25 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const reply = sequelize.define('reply', {
-    posttId: DataTypes.INTEGER,
-    writer: DataTypes.STRING,
-    content: DataTypes.TEXT
-  }, {});
-  reply.associate = function(models) {
-    // associations can be defined here
+    postId: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    writer: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    content: {
+      type: DataTypes.TEXT,
+      allowNull: false
+    }
+  });
+
+  reply.associate = (models) => {
+    reply.belongsTo(models.post, {
+      foreignKey: "postId"
+    })
   };
+  
   return reply;
 };

@@ -1,6 +1,7 @@
 extends layout
 
 block content
+    //- 데이터 추가
     form(action="/create" method="post")
         table
             tr
@@ -17,6 +18,7 @@ block content
             td Writer
             td Date
         //- routes/index.js 의 get 방식의 /lists 라우터에서 posts: result로 전달
+        //- 리스트
         for post in posts
             tr
                 td= post.title
@@ -24,9 +26,23 @@ block content
                 td= post.createdAt
                 td
                     //- 수정하기
-                    buttton
-                        a(href="/edit/"+ post.id) Modify
+                    button
+                        a(href="/edit/" + post.id) Modify
+                //- td
                 //- 삭제하기
+                //- TODO : button 태그로 바꾸기
                 form(action="/delete/" + post.id + "?_method=DELETE" method="post")
                     td 
                         input(type="submit" value="Delete")
+            tr
+                td
+            //- 댓글
+            form(action=`/reply/${post.id}` method="post")
+                tr 
+                    td
+                        input(type="text" name="replyWriter" placeholder="Enter a writer")
+                    td
+                        input(type="text" name="replyContent" placeholder="Enter a text")
+                tr
+                    td
+                        input(type="submit" value="Submit comment")
