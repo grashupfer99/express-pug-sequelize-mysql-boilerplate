@@ -1,0 +1,32 @@
+extends layout
+
+block content
+    form(action="/create" method="post")
+        table
+            tr
+                td
+                    input(type="text" name="inputTitle" placeholder="Enter a title")
+            tr
+                td
+                    input(type="text" name="inputWriter" placeholder="Enter a writer")
+        input(type="submit" value="Submit")
+    hr
+    table
+        tr 
+            td Tittle
+            td Writer
+            td Date
+        //- routes/index.js 의 get 방식의 /lists 라우터에서 posts: result로 전달
+        for post in posts
+            tr
+                td= post.title
+                td= post.writer
+                td= post.createdAt
+                td
+                    //- 수정하기
+                    buttton
+                        a(href="/edit/"+ post.id) Modify
+                //- 삭제하기
+                form(action="/delete/" + post.id + "?_method=DELETE" method="post")
+                    td 
+                        input(type="submit" value="Delete")

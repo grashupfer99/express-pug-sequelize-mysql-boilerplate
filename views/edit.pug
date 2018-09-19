@@ -1,0 +1,12 @@
+extends layout
+
+block content
+    form(action="/update/" + post.id + "?_method=PUT" method="post")
+        table
+            tr
+                td
+                    input(type="text" name="editTitle" value= post.title)
+            tr
+                td
+                    input(type="text" name="editWriter" value= post.writer)
+        input(type="submit" value="Submit")
