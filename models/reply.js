@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   reply.associate = (models) => {
-    reply.belongsTo(models.post, {
+    reply.belongsTo(models.post, { // reply.belongsTo() 에서 reply 가 post 에 속해 있다
       foreignKey: "postId"
     })
   };

@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   post.associate = (models) => {
-    post.hasMany(models.reply); // post.hasNamy() 는 post 가 reply 들을 가지고 있다
+    post.hasMany(models.reply); // post.hasNamy() 에서 post 가 reply 들을 가지고 있다
   }
 
   return post;

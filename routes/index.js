@@ -11,12 +11,22 @@ router.get('/', (req, res) => {
 
 // Read
 router.get('/lists', (req, res) => {
-  models.post.findAll()
-    .then(result => {
-      res.render('lists', {
-        posts: result
+  models.post.findAll().then(result => {
+    for(let post of result) {
+      models.post.find({
+        include: {model: models.reply, where: {postId: post.id}}
+      }).then(result2 => {
+        post.replies = result2.replies
+        console.log(post.replies)
+        console.log('------------')
       });
+      console.log(post.replies)
+    }
+    // TODO : 뷰파일 작성, loopIndex를 비동기 코드때문에 돌린 이유 확인
+    res.render('lists', {
+      posts: result
     });
+  });
 });
 
 // Create
@@ -94,20 +104,18 @@ router.delete('/delete/:id', (req, res) => {
 });
 
 // 댓글
-router.post('/reply/:id', (req, res) => {
-  let postID = req.params.id;
+router.post('/reply/:postID', (req, res) => {
+  let postID = req.params.postID;
   let body = req.body;
 
   models.reply.create({
-      posttId: postID, // a(db):b(browser)
+      postId: postID, // a(db):b(browser)
       writer: body.replyWriter,
       content: body.replyContent
     })
     .then(results => { // 복수형으로 사용
       console.log('> Succeeded writing comment');
-      res.redirect('/lists')
-      console.log(results)
-      console.log('--------')
+      res.redirect('/lists');
     })
     .catch(err => {
       console.log('> Failed writing comment');

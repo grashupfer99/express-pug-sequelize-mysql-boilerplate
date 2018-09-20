@@ -8,8 +8,6 @@ const app = express();
 
 // 라우터
 const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
-const listsRouter = require('./routes/lists');
 
 // sequelize의 sync() 메서드 호출
 let models = require('./models/index');
@@ -39,8 +37,6 @@ app
 // 라우터 사용
 app
   .use('/', indexRouter)
-  .use('/users', usersRouter)
-  .use('/lists', listsRouter);
 
 // 오류 핸들러
 app
