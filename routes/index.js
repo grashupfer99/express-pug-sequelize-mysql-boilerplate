@@ -12,20 +12,23 @@ router.get('/', (req, res) => {
 // Read
 router.get('/lists', (req, res) => {
   models.post.findAll().then(result => {
+    let loopIndex = 0
+
     for(let post of result) {
       models.post.find({
-        include: {model: models.reply, where: {postId: post.id}}
+        include: {model: models.reply, where: {postId: post.id}} // include 는 관계설정, 조건부여 역할. postId 는 여기서 외래키이며, 이 키와 관련있는 models.reply 를 조회한다
       }).then(result2 => {
-        post.replies = result2.replies
-        console.log(post.replies)
-        console.log('------------')
-      });
-      console.log(post.replies)
+        if(result2) {
+          post.replies = result2.replies
+        } // 중간에 posts 테이블의 id 값이 비어있으면 result2 에는 undefined 가 할당된다. 그래서 이 경우를 해결하기 위해 작성된 코드다. 
+        loopIndex++
+        if(loopIndex === result.length) {
+          res.render('lists', {
+            posts: result, // a(view engine): b(javascript)) 
+          });
+        }
+      }); // then() 밖에 있으면 비동기로 출력돼서 렌더링이 이뤄지지 않는다
     }
-    // TODO : 뷰파일 작성, loopIndex를 비동기 코드때문에 돌린 이유 확인
-    res.render('lists', {
-      posts: result
-    });
   });
 });
 

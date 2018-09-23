@@ -46,9 +46,9 @@ block content
                 tr
                     td
                         input(type="submit" value="Submit comment")
-                //- TODO: .ejs 형식에서 .pug 형식으로 바꿔야함
-                //- if post.replies
-                //-     for reply in replies
-                //-         tr
-                //-             td= reply.dataValues.writer
-                //-             td= reply.dataValues.content
+                //- 댓글이 없는 게시글이 있기때문에 예외처리함 
+                if post.replies
+                    for reply in post.replies
+                        tr
+                            td= reply.dataValues.writer
+                            td= reply.dataValues.content
