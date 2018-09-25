@@ -46,7 +46,7 @@ block content
                 tr
                     td
                         input(type="submit" value="Submit comment")
-                //- 댓글이 없는 게시글이 있기때문에 예외처리함 
+                //- 댓글이 없는 게시글이 있기때문에 조건문으로 예외처리함
                 if post.replies
                     for reply in post.replies
                         tr
