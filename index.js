@@ -19,6 +19,7 @@ models.sequelize.sync().then(() => {
     .log(err);
 });
 
+
 // 뷰엔진설정
 app
   .set('views', path.join(__dirname, 'views'))
