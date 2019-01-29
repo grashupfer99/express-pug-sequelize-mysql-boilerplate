@@ -1,9 +1,9 @@
-Boilerplate (expressJS + pug + sequelize + mySQL)
+Boilerplate (Express + Pug + Sequelize + MySQL)
 ====
 
-# Installation
-* ```npm install``` or ```yarn add```
+## 설치
+- `npm install` 혹은 `yarn add`
 
-# Start
-* ```start```: 
-* ```start:dev```: development mode
+## 실행
+- `npm start` 혹은 `yarn start`
+- `npm start:dev` 혹은 `yarn start:dev`
